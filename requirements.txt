@@ -1,6 +1,7 @@
 # 后端
 Django>=5.2.4
 psycopg>=3.2.9 # 数据库PostgreSQL
+djoser>=2.3.3 # 用户认证
 django-cors-headers>=4.7.0 # 跨域
 django-filter>=25.1 # 过滤器
 django-redis>=6.0.0 # Redis缓存

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -31,22 +32,51 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-    'rest_framework',
-    'corsheaders',
-    "drf_yasg",
-    # 自定义应用
-    'apps.accounts',
-    'apps.challenges',
-    'apps.competitions',
-    'apps.submissions',
-    'apps.scoreboard',
+    # Django 默认内置应用
+    "django.contrib.admin",          # Django 管理后台
+    "django.contrib.auth",           # 认证系统（用户、权限）
+    "django.contrib.contenttypes",   # 内容类型框架（用于通用关系）
+    "django.contrib.sessions",      # 会话管理
+    "django.contrib.messages",       # 消息框架（用于一次性提示）
+    "django.contrib.staticfiles",    # 静态文件管理（CSS/JS/图片等）
+
+    # 第三方库应用
+    'rest_framework',               # Django REST framework（构建API）
+    'rest_framework.authtoken',     # 用于 Token 认证
+    'rest_framework_simplejwt.token_blacklist', # 用于黑名单令牌
+    'corsheaders',                  # 跨域资源共享（CORS）支持
+    "drf_yasg",                     # API文档生成工具（基于Swagger/OpenAPI）
+
+    # 自定义应用（项目特定功能模块）
+    'apps.accounts',                # 用户账户管理（注册/登录/权限等）
+    'apps.challenges',              # CTF 题目管理
+    'apps.competitions',            # 比赛管理
+    'apps.submissions',             # 用户提交记录管理
+    'apps.scoreboard',              # 积分榜功能
 ]
+
+AUTH_USER_MODEL = "accounts.CustomUser"
+
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_RATES': {
+        'login': '5/minute',  # 登录接口限流
+    },
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',  # JWT 支持
+        'rest_framework.authentication.SessionAuthentication',         # Session 支持
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    )
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),     # 访问令牌有效期
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=3),        # 刷新令牌有效期
+    'ROTATE_REFRESH_TOKENS': True,                      # 使用刷新令牌后是否轮换新令牌
+    'BLACKLIST_AFTER_ROTATION': True,                   # 轮换后是否将旧令牌加入黑名单
+    'UPDATE_LAST_LOGIN': True,                          # 每次登录是否更新用户最后登录时间
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -56,6 +86,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
 ROOT_URLCONF = "config.urls"
