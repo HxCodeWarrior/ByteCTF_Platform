@@ -1,0 +1,13 @@
+# 后端
+Django>=5.2.4
+psycopg>=3.2.9 # 数据库PostgreSQL
+django-cors-headers>=4.7.0 # 跨域
+django-filter>=25.1 # 过滤器
+django-redis>=6.0.0 # Redis缓存
+django-redis-cache>=3.0.1 # Redis缓存
+djangorestframework>=3.16.0
+djangorestframework-simplejwt>=5.5.1 # JWT认证
+celery>=5.5.3  # 异步任务
+redis>=6.2.0   # Redis缓存
+drf-yasg>=1.21.10 # API自动文档
+python-decouple>=3.8 # 依赖注入

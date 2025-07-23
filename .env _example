@@ -1,0 +1,12 @@
+# Django 项目的密钥（正式部署需替换为更安全的值）
+SECRET_KEY=your-secret-key
+
+# Django 环境设置（开发/生产）
+DEBUG=True
+
+# PostgreSQL 配置项
+POSTGRES_DB=bytectf_db                          # 数据库名
+POSTGRES_USER=bytewyrm                          # 数据库用户名
+POSTGRES_PASSWORD=<Password><ROOT>              # 数据库密码
+POSTGRES_HOST=bytectf_db                        # Django 中的数据库主机，服务名即容器名（由 docker-compose 提供内部 DNS）
+POSTGRES_PORT=5432                              # PostgreSQL 端口（默认）
